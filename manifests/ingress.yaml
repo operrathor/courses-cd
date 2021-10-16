@@ -1,0 +1,53 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: courses-stripprefix
+  namespace: courses
+spec:
+  stripPrefix:
+    prefixes:
+    - /courses
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: courses-basicauth
+  namespace: courses
+spec:
+  basicAuth:
+    secret: courses-secret
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: courses-server
+  namespace: courses
+spec:
+  entryPoints:
+  - web
+  routes:
+  - match: PathPrefix(`/courses/api/`)
+    kind: Rule
+    services:
+    - name: courses-server
+      port: 80
+    middlewares:
+    - name: courses-stripprefix
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: courses-client
+  namespace: courses
+spec:
+  entryPoints:
+  - web
+  routes:
+  - match: PathPrefix(`/courses/`)
+    kind: Rule
+    services:
+    - name: courses-client
+      port: 80
+    middlewares:
+    - name: courses-stripprefix
+    - name: courses-basicauth

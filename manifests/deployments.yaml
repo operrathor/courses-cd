@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: courses-server
+  name: courses-server
+  namespace: courses
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: courses-server
+  template:
+    metadata:
+      labels:
+        app: courses-server
+    spec:
+      containers:
+      - image: operrathor/courses-server:1.0.0
+        name: courses-server
+        env:
+        - name: NODE_ENV
+          value: production
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: courses-client
+  name: courses-client
+  namespace: courses
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: courses-client
+  template:
+    metadata:
+      labels:
+        app: courses-client
+    spec:
+      containers:
+      - image: operrathor/courses-client:1.0.0
+        name: courses-client
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: REACT_APP_API_BASE_URL
+          value: /courses/api

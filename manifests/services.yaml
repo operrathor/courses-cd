@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: courses-server
+  name: courses-server
+  namespace: courses
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 3001
+  selector:
+    app: courses-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: courses-client
+  name: courses-client
+  namespace: courses
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: courses-client
