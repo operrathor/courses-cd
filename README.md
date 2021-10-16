@@ -1,5 +1,9 @@
 # Courses CD
 
+Kubernetes & Argo CD configuration for [courses](https://github.com/operrathor/courses).
+
+## Setup
+
 Create Argo CD application:
 
 ```bash
